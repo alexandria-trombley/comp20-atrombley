@@ -1,87 +1,96 @@
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1200px) { 
 
-	.homer {
+	div.homer {
 
+		background: url('homer.jpg') 0 0px;
+		background-repeat: no-repeat;		
 		width: 166.5px;
-		height:125px;
-		content:url(homer.png) 0 0px;
-		
+		height:125px;  	
 	}
 }
 
+
 @media screen and (min-width: 1100px) and (max-width:1200px) {
 
-	.homer {
+	div.homer {
 
+		background:url('homer.jpg') -166.5px 0px;
+		background-repeat: no-repeat;		
 		width: 166.5px;
 		height:125px;
-		content:url(homer.png) 166.5 0px;
-		
+
 	}
 }
 
 @media screen and (min-width: 1000px) and (max-width:1100px) {
 
-	.homer {
+	div.homer {
 
+		background:url('homer.jpg') 0 -125px;
+		background-repeat: no-repeat;
 		width: 166.5px;
 		height:125px;
-		content:url(homer.png) 0 -125px;
 		
 	}
 }
 
 @media screen and (min-width: 900px) and (max-width:1000px) {
 
-	.homer {
+	div.homer {
 
+		background:url('homer.jpg') -166.5px -125px;
+		background-repeat: no-repeat;
 		width: 166.5px;
 		height:125px;
-		content:url(homer.png) 166.5 -125px;
 		
 	}
 }
 
 @media screen and (min-width: 800px) and (max-width:900px) {
 
-	.homer {
+	div.homer {
 
+		background:url('homer.jpg') 0 -250px;	
+		background-repeat: no-repeat;	
 		width: 166.5px;
 		height:125px;
-		content:url(homer.png) 0 -250px;
+		
 		
 	}
 }
 
 @media screen and (min-width: 700px) and (max-width:800px) {
 
-	.homer {
+	div.homer {
 
+		background:url('homer.jpg') -166.5px -250px;
+		background-repeat: no-repeat;		
 		width: 166.5px;
 		height:125px;
-		content:url(homer.png) 166.5 -250px;
 		
 	}
 }
 
 @media screen and (min-width: 600px) and (max-width:700px) {
 
-	.homer {
+	div.homer {
 
+		background:url('homer.jpg') 0 -375px;
+		background-repeat: no-repeat;
 		width: 166.5px;
 		height:125px;
-		content:url(homer.png) 0 -375px;
 		
 	}
 }
 
 @media screen and (max-width:600px) {
 
-	.homer {
+	div.homer {
 
+		background:url('homer.jpg') -166.5px -375px;
+		background-repeat: no-repeat;
 		width: 166.5px;
 		height:125px;
-		content:url(homer.png) 166.5 -375px;
 		
 	}
 }
