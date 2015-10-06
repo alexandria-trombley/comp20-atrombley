@@ -1,9 +1,16 @@
+/* This tag checks to make sure the file is being accessed 
+on a device with a screen, and loads the appropriate picture based 
+on the browser size */
 @media screen and (min-width: 1200px) { 
 
 	div.homer {
 
 		background: url('homer.jpg') 0 0px;
-		background-repeat: no-repeat;		
+		
+		/* makes sure the picture is not repeated in tiles across screen */
+		background-repeat: no-repeat;	
+
+		/* sets the appropriate size based on original picture */	
 		width: 166.5px;
 		height:125px;  	
 	}

@@ -14,7 +14,7 @@
 
 	div.homer {
 
-		background:url('homer.jpg') 166.5px 0px;
+		background:url('homer.jpg') -166.5px 0px;
 		background-repeat: no-repeat;		
 		width: 166.5px;
 		height:125px;
@@ -38,7 +38,7 @@
 
 	div.homer {
 
-		background:url('homer.jpg') +166.5px -125px;
+		background:url('homer.jpg') -166.5px -125px;
 		background-repeat: no-repeat;
 		width: 166.5px;
 		height:125px;
