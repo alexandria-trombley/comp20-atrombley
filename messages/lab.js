@@ -12,7 +12,8 @@ myRequest.onreadystatechange = function() {
 	}
 }
 
-myRequest.open("GET", "data.json", true);
+// this open statement works with both a local file and a URI
+myRequest.open("GET", "http://messagehub.herokuapp.com/messages.json", true);
 myRequest.send();
 
 }
