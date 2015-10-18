@@ -34,3 +34,23 @@ function print(data) {
 	
 	
 }
+
+
+/*	var jsonData;
+	function reqListener() {
+		jsonData = JSON.parse(this.responseText);
+	} 
+
+	var myRequest = new XMLHttpRequest();
+	myRequest.onload = reqListener;
+	myRequest.open("get", 'data.json', true); 
+console.log(myRequest);
+	
+	
+} */
+
+	
+	
+		
+
+
