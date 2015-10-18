@@ -1,0 +1,23 @@
+A. What aspects of the work have been implemented properly and which have not?
+
+	I blieve that all of the work has been implemented properly. The .js 
+	file takes JSON data, opens it, parses it, and puts it into the HTML
+	file.
+
+B. Identify anyone with whom you have collaborated or discussed the assignment.
+
+	I attended office hours with Obaid Farooqui, who conceptually helped 
+	me with the lab.
+
+C. Say approximately how many hours you spent on this assignment.
+
+	7 hours.
+
+D. Is it possible to request the data from a different origin or from your local machine using XMLHttpRequest? Why or why not?
+
+	It is imperitive that, while using JavaScript, the data be requested from 
+	the same origin as explained by the Same-Origin Policy. This means the page
+	doing the requesting and the page it is requesting from need to have the
+	same protocol, port (if specified) and host. Therefore, without another
+	solution or method, you cannot request data from another origin. Also, if 		your local machine is hosting another web page with the same origin, then 		it can be accessed with an XMLHttpRequest.
+	
