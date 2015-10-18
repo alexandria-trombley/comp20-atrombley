@@ -10,7 +10,7 @@ myRequest.onreadystatechange = function() {
 		print(data);
 		
 	}
-}
+} 
 
 myRequest.open("GET", "data.json", true);
 myRequest.send();

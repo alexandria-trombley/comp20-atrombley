@@ -25,7 +25,7 @@ function print(data) {
 	// loops through the objects in the array, as created in JSON,
 	// concatonates these objects appropriately
 	for (i = 0; i < data.length; i++) {
-		out += '<span class = "mess">' + data[i].content + '</span>' + "  " + '<span class = "name">' + data[i].username + '</span>' + '<div id = "break">' + '<br>' + '<br>' + '</div>';
+		out += '<span class = "mess">' + data[i].content + "  " + '</span>' + "  " + '<span class = "name">' + data[i].username + '</span>' + '<div id = "break">' + '<br>' + '<br>' + '</div>';
 		
 		// applies the concatonated strings to the HTML document
 		document.getElementById("messages").innerHTML = out;
