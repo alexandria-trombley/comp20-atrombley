@@ -9,13 +9,13 @@ myRequest.onreadystatechange = function() {
 		var data = JSON.parse(myRequest.responseText);
 		print(data);
 		
+	// if the document is not found or returned properly, prints error message
 	} else {
-		document.getElementById("messages").innerHTML = 'sorry, we ran into an issue...';
+		document.getElementById("messages").innerHTML = 'oops...something went wrong';
 	}
-}
+} 
 
-// this open statement works with both a local file and a URI
-myRequest.open("GET", "data.json", true);
+myRequest.open("GET", "dat.json", true);
 myRequest.send();
 
 }
@@ -33,24 +33,9 @@ function print(data) {
 		// applies the concatonated strings to the HTML document
 		document.getElementById("messages").innerHTML = out;
 
-	}
-	
-	
+	}	
 }
 
-
-/*	var jsonData;
-	function reqListener() {
-		jsonData = JSON.parse(this.responseText);
-	} 
-
-	var myRequest = new XMLHttpRequest();
-	myRequest.onload = reqListener;
-	myRequest.open("get", 'data.json', true); 
-console.log(myRequest);
-	
-	
-} */
 
 	
 	
