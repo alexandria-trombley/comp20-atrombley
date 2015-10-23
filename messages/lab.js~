@@ -11,7 +11,7 @@ myRequest.onreadystatechange = function() {
 		
 	// if the document is not found or returned properly, prints error message
 	} else {
-		document.getElementById("messages").innerHTML = "oops...something went wrong";
+		document.getElementById("messages").innerHTML = 'oops...something went wrong';
 	}
 } 
 
