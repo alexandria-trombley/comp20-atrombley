@@ -10,6 +10,7 @@
 
 <script>
 
+// retrieves message from text box, and prints it out on the screen
 function retrieveMessage() {
 
 	var message = document.getElementById("message").value;
@@ -17,17 +18,28 @@ function retrieveMessage() {
 
 }
 
+//gets current location and prints it out on the screen
+function getLocation() {
+
+	navigator.geolocation.getCurrentPosition(function(position) {
+		
+		document.getElementById("my_location").innerHTML = 'latitude:' + "  " + position.coords.latitude + '<br>' + 'longitude:' + "   " + position.coords.longitude;
+	});
+}
+
 
 </script>
 
-<body>
+<body onload="getLocation()">
 
+	<!--takes in a message from the user, then JavaScript manipulates it-->
 	Input your message here: <br>
 	<input type="text" id="message">
-	
 	<button onclick="retrieveMessage()">Go!</button>
-	
 	<div id="output"></div>
+
+	<!--where the location information is loaded-->
+	<div id="my_location"></div>
 
 </body>
 

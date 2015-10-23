@@ -15,7 +15,17 @@ function retrieveMessage() {
 
 	var message = document.getElementById("message").value;
 	document.getElementById("output").innerHTML = message;
+	getLocation();
 
+}
+
+//gets current location and prints it out on the screen
+function getLocation() {
+
+	navigator.geolocation.getCurrentPosition(function(position) {
+		
+		document.getElementById("my_location").innerHTML = 'latitude:' + "  " + position.coords.latitude + '<br>' + 'longitude:' + "   " + position.coords.longitude;
+	});
 }
 
 
@@ -26,10 +36,11 @@ function retrieveMessage() {
 	<!--takes in a message from the user, then JavaScript manipulates it-->
 	Input your message here: <br>
 	<input type="text" id="message">
-	
 	<button onclick="retrieveMessage()">Go!</button>
-	
 	<div id="output"></div>
+
+	<!--where the location information is loaded-->
+	<div id="my_location"></div>
 
 </body>
 
