@@ -9,11 +9,13 @@ myRequest.onreadystatechange = function() {
 		var data = JSON.parse(myRequest.responseText);
 		print(data);
 		
+	} else {
+		document.getElementById("messages").innerHTML = 'sorry, we ran into an issue...';
 	}
 }
 
 // this open statement works with both a local file and a URI
-myRequest.open("GET", "http://messagehub.herokuapp.com/messages.json", true);
+myRequest.open("GET", "dat.json", true);
 myRequest.send();
 
 }
