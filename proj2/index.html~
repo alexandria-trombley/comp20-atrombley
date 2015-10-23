@@ -5,13 +5,29 @@
 <head>
 	<meta charset="utf-8" />
 	<title>Map Chat</title>
-	<script src="lab.js"></script>
-	<link rel="stylesheet" href="style.css" type="text/css" />
+	
 </head>
+
+<script>
+
+function retrieveMessage() {
+
+	var message = document.getElementById("message").value;
+	document.getElementById("output").innerHTML = message;
+
+}
+
+
+</script>
 
 <body>
 
-	Hello!
+	Input your message here: <br>
+	<input type="text" id="message">
+	
+	<button onclick="retrieveMessage()">Go!</button>
+	
+	<div id="output"></div>
 
 </body>
 

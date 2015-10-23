@@ -8,9 +8,28 @@
 	
 </head>
 
+<script>
+
+// retrieves message from text box, and prints it out on the screen
+function retrieveMessage() {
+
+	var message = document.getElementById("message").value;
+	document.getElementById("output").innerHTML = message;
+
+}
+
+
+</script>
+
 <body>
 
-	Hello!
+	<!--takes in a message from the user, then JavaScript manipulates it-->
+	Input your message here: <br>
+	<input type="text" id="message">
+	
+	<button onclick="retrieveMessage()">Go!</button>
+	
+	<div id="output"></div>
 
 </body>
 
