@@ -35,12 +35,11 @@ function retrieveMessage() {
 			if (myRequest.readyState == 4 && myRequest.status == 200) {
 		
 				var data = JSON.parse(myRequest.responseText);
-				print(data);
+				print(data, latitude, longitude);
 	
-			} else {
-	
-				document.getElementById("class_data").innerHTML = "could not retrieve class data";
-			}
+			} 
+
+			//PUT IN IF STATEMENT HERE
 
 		}
 
@@ -60,9 +59,35 @@ function retrieveMessage() {
 
 }
 
-function print(data) {
+function print(data, lat, long) {	
 
-console.log(data);
+	var out = "  ";
+	
+	Number.prototype.toRad = function () {
+		return this * Math.PI / 180;
+	}
+
+	for (i = 0; i < data.length; i++) {
+
+		// Use the haversine formula to calculate the distance between self and other
+		// classmates 
+		var lat2 = data[i].lat;
+		var long2 = data[i].lng;
+		var R = 6371;
+
+		var x1 = lat2 - lat;
+		var dLat = x1.toRad();
+		var x2 = long2 - long;
+		var dLong = x2.toRad();
+		var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat.toRad()) * Math.cos(lat2.toRad()) * Math.sin(dLong/2) * Math.sin(dLong/2);
+		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+		var distance = R * c;
+		
+		// tell the user how far everyone in class is from them via screen
+		out += data[i].login + " is " + distance + " miles from you." + '<br>';
+		document.getElementById("test").innerHTML = out;
+	
+	}	
 
 }
 
@@ -81,6 +106,8 @@ console.log(data);
 
 	<!--where the class data information is recorded-->
 	<div id="class_data"></div>
+
+	<div id="test"></div>
 
 </body>
 
