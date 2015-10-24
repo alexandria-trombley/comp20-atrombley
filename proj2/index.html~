@@ -96,10 +96,7 @@ function print(data, lat, long, mess) {
 	marker.setMap(map);
 
 	// open info window when user clicks on window
-	google.maps.event.addListener(marker, 'click', function() {
-		infowindow.setContent(name);
-		infowindow.open(map, this);
-	});
+	AttachInfoWindow(map, marker, name);
 	
 	var out = "  ";
 	
@@ -110,7 +107,9 @@ function print(data, lat, long, mess) {
 
 	// iterate through haversine calculation for each classmate
 	for (i = 0; i < data.length; i++) {
-		if (data[i].user != "LeaAmmerman") {
+console.log(data[i].login);
+		if (data[i].login != "LeaAmmerman") {
+console.log(data[i].login);
 		// Use the haversine formula to calculate the distance between self and other
 		// classmates 
 		var lat2 = data[i].lat;
@@ -145,6 +144,8 @@ function print(data, lat, long, mess) {
 	}	
 }
 
+// attaches infowindow to marker
+// need separate function so the loop has closure
 function AttachInfoWindow (map, marker, StudentContent) {
 	var infowindow = new google.maps.InfoWindow();
 	google.maps.event.addListener(marker, 'click', function() {
