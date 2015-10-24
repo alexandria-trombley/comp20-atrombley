@@ -9,25 +9,62 @@
 </head>
 
 <script>
-
 // retrieves message from text box, and prints it out on the screen
 function retrieveMessage() {
 
-	var message = document.getElementById("message").value;
-	document.getElementById("output").innerHTML = message;
-	getLocation();
-
-}
-
-//gets current location and prints it out on the screen
-function getLocation() {
-
 	navigator.geolocation.getCurrentPosition(function(position) {
+
+		// retrieves message input by user
+		var mess = document.getElementById("message").value;
+		document.getElementById("output").innerHTML = mess;
+
+		// determines the location of the user
+		var longitude = position.coords.longitude;
+		var latitude = position.coords.latitude;
+
+		document.getElementById("my_location").innerHTML = 'latitude:' + "  " + latitude + '<br>' +
+		 'longitude:' + "   " + longitude;
+
+		// creates new HTTP request object 
+		// this will be used to get info from server
+		var myRequest = new XMLHttpRequest();
+
+		// parses the data when it has been returned from the server
+		myRequest.onreadystatechange = function() {
+	
+			if (myRequest.readyState == 4 && myRequest.status == 200) {
 		
-		document.getElementById("my_location").innerHTML = 'latitude:' + "  " + position.coords.latitude + '<br>' + 'longitude:' + "   " + position.coords.longitude;
+				var data = JSON.parse(myRequest.responseText);
+				print(data);
+	
+			} else {
+	
+				document.getElementById("class_data").innerHTML = "could not retrieve class data";
+			}
+
+		}
+
+		// sends user information to post to server
+		myRequest.open("POST", "https://secret-about-box.herokuapp.com/sendLocation", true);
+		myRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+
+		// make sure all information is in string format
+		var YOUR_LATITUDE = latitude.toString();
+		var YOUR_LONGITUDE = longitude.toString();
+		var sendMessage = "login=LeaAmmerman&lat=" + YOUR_LATITUDE + "&lng=" + YOUR_LONGITUDE + "&message=" + mess;		
+		myRequest.send(sendMessage);
+				
 	});
+
+	
+
 }
 
+function print(data) {
+
+console.log(data);
+
+}
 
 </script>
 
@@ -41,6 +78,9 @@ function getLocation() {
 
 	<!--where the location information is loaded-->
 	<div id="my_location"></div>
+
+	<!--where the class data information is recorded-->
+	<div id="class_data"></div>
 
 </body>
 
