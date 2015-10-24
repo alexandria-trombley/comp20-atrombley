@@ -11,5 +11,7 @@
 
 3) How many hours did you spend on this assignment?
 
-	Approximately 10 hours.
+	Approximately 11 hours.
 
+
+NOTE: I originally did the project in a folder under the name "proj2." When I reviewed the assignment, I realized it had to be named "mapchat." I copied all of my documents into a folder properly named "mapchat;" however, it does not show all of the commits I did while working on the project. To see these, look at my "proj2."

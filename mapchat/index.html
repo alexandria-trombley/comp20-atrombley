@@ -13,13 +13,13 @@
 
 <script>
 
-// retrieves message from text box and prints it out on the screen, gets location and prints it on screen, 
-// and gets the location of all other students from datastore and prints on screen
+// retrieves location, and uses this to send data to datastore API, and receive class data back 
+// also parses the received data, and sends it to be printed to the screen appropriately
 function retrieveMessage() {
 
 	navigator.geolocation.getCurrentPosition(function(position) {
 
-		// retrieves message input by user
+		// sets user message
 		var mess = "Hello!";
 
 		// determines the location of the user, and puts that location into 
@@ -39,9 +39,10 @@ function retrieveMessage() {
 				var data = JSON.parse(myRequest.responseText);
 				print(data, latitude, longitude, mess);
 	
-			} 
-
-			//PUT IN IF STATEMENT HERE
+			} else {
+				document.getElementById("canvas").innerHTML = "sorry, could not load data.";
+			}
+				
 
 		}
 
@@ -53,14 +54,15 @@ function retrieveMessage() {
 		var YOUR_LATITUDE = latitude.toString();
 		var YOUR_LONGITUDE = longitude.toString();
 		var sendMessage = "login=LeaAmmerman&lat=" + YOUR_LATITUDE + "&lng=" + YOUR_LONGITUDE + "&message=" + mess;		
+		// sends data to the server
 		myRequest.send(sendMessage);
 				
-	});
-
-	
+	});	
 
 }
 
+// prints the class data and the google map, while also calculating the distance of the 
+// user from their classmates
 function print(data, lat, long, mess) {	
 
 	// put lat long position in storage
@@ -88,17 +90,24 @@ function print(data, lat, long, mess) {
 	// put myself on the map
 	map.panTo(me);
 
-	// create marker for self 
+ 	//Create image object that will be used for marker
+	var image = {
+		url: 'image1.JPG',
+		scaledSize: new google.maps.Size(80, 100)
+	};
+
+	// create marker for self
 	var marker = new google.maps.Marker({
 		position: me,
-		title: name
+		title: name,
+		icon: image
 	});
+
+	// put marker on the screen
 	marker.setMap(map);
 
 	// open info window when user clicks on window
-	AttachInfoWindow(map, marker, name);
-	
-	var out = "  ";
+	AttachInfoWindow(map, marker, content);
 	
 	// define toRad()
 	Number.prototype.toRad = function () {
