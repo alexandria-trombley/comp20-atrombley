@@ -138,15 +138,23 @@ function print(data, lat, long, mess) {
 		var StudentContent = "Name: " + data[i].login + '<br>' + "Message: " + data[i].message + '<br>' + "Distance: " + DISTANCE;
 
 		// open info window when user clicks on window
-		google.maps.event.addListener(marker, 'click', function() {
-			infowindow.setContent(StudentContent);
-			infowindow.open(map, this);
-		});
+		AttachInfoWindow(map, marker, StudentContent);
 
 		}
 	
 	}	
 }
+
+// attaches infowindow to marker
+// need separate function so the loop has closure
+function AttachInfoWindow (map, marker, StudentContent) {
+	var infowindow = new google.maps.InfoWindow();
+	google.maps.event.addListener(marker, 'click', function() {
+		infowindow.setContent(StudentContent);
+		infowindow.open(map, this);
+	});
+	
+}	
 
 </script>
 

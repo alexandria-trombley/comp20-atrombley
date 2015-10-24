@@ -136,20 +136,23 @@ function print(data, lat, long, mess) {
 		
 		// concatonate info for info window
 		var StudentContent = "Name: " + data[i].login + '<br>' + "Message: " + data[i].message + '<br>' + "Distance: " + DISTANCE;
-		
-		var student_name = data[i].login;
-		var student_message = data[i].message;
 
 		// open info window when user clicks on window
-		google.maps.event.addListener(marker, 'click', function() {
-			infowindow.setContent(StudentContent);
-			infowindow.open(map, this);
-		});
+		AttachInfoWindow(map, marker, StudentContent);
 
 		}
 	
 	}	
 }
+
+function AttachInfoWindow (map, marker, StudentContent) {
+	var infowindow = new google.maps.InfoWindow();
+	google.maps.event.addListener(marker, 'click', function() {
+		infowindow.setContent(StudentContent);
+		infowindow.open(map, this);
+	});
+	
+}	
 
 </script>
 
