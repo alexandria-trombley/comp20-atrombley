@@ -5,12 +5,16 @@
 <head>
 	<meta charset="utf-8" />
 	<title>Map Chat</title>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+	<link rel="stylesheet" href="style.css" />
 	
 </head>
 
 <script>
-// retrieves message from text box, and prints it out on the screen
+
+// retrieves message from text box and prints it out on the screen, gets location and prints it on screen, 
+// and gets the location of all other students from datastore and prints on screen
 function retrieveMessage() {
 
 	navigator.geolocation.getCurrentPosition(function(position) {
@@ -19,12 +23,10 @@ function retrieveMessage() {
 		var mess = document.getElementById("message").value;
 		document.getElementById("output").innerHTML = mess;
 
-		// determines the location of the user
+		// determines the location of the user, and puts that location into 
+		// storage by google map
 		var longitude = position.coords.longitude;
 		var latitude = position.coords.latitude;
-
-		document.getElementById("my_location").innerHTML = 'latitude:' + "  " + latitude + '<br>' +
-		 'longitude:' + "   " + longitude;
 
 		// creates new HTTP request object 
 		// this will be used to get info from server
@@ -36,7 +38,7 @@ function retrieveMessage() {
 			if (myRequest.readyState == 4 && myRequest.status == 200) {
 		
 				var data = JSON.parse(myRequest.responseText);
-				print(data, latitude, longitude);
+				print(data, latitude, longitude, mess);
 	
 			} 
 
@@ -60,14 +62,52 @@ function retrieveMessage() {
 
 }
 
-function print(data, lat, long) {	
+function print(data, lat, long, mess) {	
 
+	// put lat long position in storage
+	var me = new google.maps.LatLng(lat, long);
+	
+	// set preferences for how the screen loads 
+	var screen_preference = {
+		
+		zoom: 13,
+		center: me,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+
+	// set up variables needed for google map function
+	var map;
+	var marker;
+	var infowindow = new google.maps.InfoWindow();
+
+	// initialize new google map 
+	map = new google.maps.Map(document.getElementById('canvas'), screen_preference);
+	document.getElementById("canvas") = map;
+
+	// put myself on the map
+	map.panTo(me);
+
+	// create marker for self 
+	var marker = new google.maps.Marker({
+		position: me,
+		title: mess
+	});
+	marker.setMap(map);
+
+	// open info window when user clicks on window
+	google.maps.event.addListener(marker, 'click', function() {
+		infowindow.setContent(marker.title);
+		infowindow.open(map.marker);
+	});
+	
 	var out = "  ";
 	
+	// define toRad()
 	Number.prototype.toRad = function () {
 		return this * Math.PI / 180;
 	}
 
+	// iterate through haversine calculation for each classmate
 	for (i = 0; i < data.length; i++) {
 
 		// Use the haversine formula to calculate the distance between self and other
@@ -83,13 +123,8 @@ function print(data, lat, long) {
 		var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat.toRad()) * Math.cos(lat2.toRad()) * Math.sin(dLong/2) * Math.sin(dLong/2);
 		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 		var distance = R * c;
-		
-		// tell the user how far everyone in class is from them via screen
-		out += data[i].login + " is " + distance + " miles from you." + '<br>';
-		document.getElementById("test").innerHTML = out;
 	
 	}	
-
 }
 
 </script>
@@ -109,6 +144,10 @@ function print(data, lat, long) {
 	<div id="class_data"></div>
 
 	<div id="test"></div>
+
+	<div style="height:100%; width:100%;">
+		<div id="canvas"><div/>
+	</div>
 
 </body>
 
