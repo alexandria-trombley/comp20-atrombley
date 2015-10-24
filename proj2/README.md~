@@ -1,0 +1,6 @@
+1) Identify which parts of the assignment have been properly implemented.
+
+	I believe that all aspects of this project have been implemented correctly. The program locates the 
+	user and places them on the map as well as sending the user's data to the 'super secret' API, 
+	retrieving the information of all of the other students, and placing them on the map. Everyone on the 
+	map has an appropriate marker and information box. 
