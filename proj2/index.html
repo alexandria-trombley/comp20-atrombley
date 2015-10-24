@@ -6,7 +6,7 @@
 	<meta charset="utf-8" />
 	<title>Map Chat</title>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true&v=3"></script>
 	<link rel="stylesheet" href="style.css" />
 	
 </head>
@@ -74,10 +74,13 @@ function print(data, lat, long, mess) {
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 
+	var content = "Name: LeaAmmerman";
+
 	// set up variables needed for google map function
 	var map;
 	var marker;
 	var infowindow = new google.maps.InfoWindow();
+	var name = "LeaAmmerman";
 
 	// initialize new google map 
 	map = new google.maps.Map(document.getElementById("canvas"), screen_preference);
@@ -88,14 +91,14 @@ function print(data, lat, long, mess) {
 	// create marker for self 
 	var marker = new google.maps.Marker({
 		position: me,
-		title: mess
+		title: name
 	});
 	marker.setMap(map);
 
 	// open info window when user clicks on window
 	google.maps.event.addListener(marker, 'click', function() {
-		infowindow.setContent(marker.title);
-		infowindow.open(map.marker);
+		infowindow.setContent(name);
+		infowindow.open(map, this);
 	});
 	
 	var out = "  ";
@@ -107,7 +110,7 @@ function print(data, lat, long, mess) {
 
 	// iterate through haversine calculation for each classmate
 	for (i = 0; i < data.length; i++) {
-
+		if (data[i].user != "LeaAmmerman") {
 		// Use the haversine formula to calculate the distance between self and other
 		// classmates 
 		var lat2 = data[i].lat;
@@ -121,6 +124,26 @@ function print(data, lat, long, mess) {
 		var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat.toRad()) * Math.cos(lat2.toRad()) * Math.sin(dLong/2) * Math.sin(dLong/2);
 		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 		var distance = R * c;
+		var DISTANCE = distance.toString();
+
+		//print other students' markers to the map
+		var student = new google.maps.LatLng(lat2, long2);
+		var marker = new google.maps.Marker({
+			position: student,
+			title: data[i].login
+		});
+		marker.setMap(map);
+		
+		// concatonate info for info window
+		var StudentContent = "Name: " + data[i].login + '<br>' + "Message: " + data[i].message + '<br>' + "Distance: " + DISTANCE;
+
+		// open info window when user clicks on window
+		google.maps.event.addListener(marker, 'click', function() {
+			infowindow.setContent(StudentContent);
+			infowindow.open(map, this);
+		});
+
+		}
 	
 	}	
 }
@@ -128,12 +151,6 @@ function print(data, lat, long, mess) {
 </script>
 
 <body onload="retrieveMessage()">
-
-	<!--takes in a message from the user, then JavaScript manipulates it-->
-<!--	Input your message here: <br>
-	<input type="text" id="message">
-	<button onclick="retrieveMessage()">Go!</button>
-	<div id="output"></div>			-->
 
 	<div id="canvas"><div/>
 
