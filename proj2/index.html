@@ -6,7 +6,7 @@
 	<meta charset="utf-8" />
 	<title>Map Chat</title>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
 	<link rel="stylesheet" href="style.css" />
 	
 </head>
@@ -20,8 +20,7 @@ function retrieveMessage() {
 	navigator.geolocation.getCurrentPosition(function(position) {
 
 		// retrieves message input by user
-		var mess = document.getElementById("message").value;
-		document.getElementById("output").innerHTML = mess;
+		var mess = "Hello!";
 
 		// determines the location of the user, and puts that location into 
 		// storage by google map
@@ -81,8 +80,7 @@ function print(data, lat, long, mess) {
 	var infowindow = new google.maps.InfoWindow();
 
 	// initialize new google map 
-	map = new google.maps.Map(document.getElementById('canvas'), screen_preference);
-	document.getElementById("canvas") = map;
+	map = new google.maps.Map(document.getElementById("canvas"), screen_preference);
 
 	// put myself on the map
 	map.panTo(me);
@@ -129,25 +127,15 @@ function print(data, lat, long, mess) {
 
 </script>
 
-<body>
+<body onload="retrieveMessage()">
 
 	<!--takes in a message from the user, then JavaScript manipulates it-->
-	Input your message here: <br>
+<!--	Input your message here: <br>
 	<input type="text" id="message">
 	<button onclick="retrieveMessage()">Go!</button>
-	<div id="output"></div>
+	<div id="output"></div>			-->
 
-	<!--where the location information is loaded-->
-	<div id="my_location"></div>
-
-	<!--where the class data information is recorded-->
-	<div id="class_data"></div>
-
-	<div id="test"></div>
-
-	<div style="height:70%; width:100%; top: 100px">
-		<div id="canvas"><div/>
-	</div>
+	<div id="canvas"><div/>
 
 </body>
 
