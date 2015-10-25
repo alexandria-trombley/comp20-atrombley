@@ -19,7 +19,7 @@ function retrieveMessage() {
 
 	navigator.geolocation.getCurrentPosition(function(position) {
 
-		// retrieves message input by user
+		// sets user message
 		var mess = "Hello!";
 
 		// determines the location of the user, and puts that location into 
@@ -54,14 +54,15 @@ function retrieveMessage() {
 		var YOUR_LATITUDE = latitude.toString();
 		var YOUR_LONGITUDE = longitude.toString();
 		var sendMessage = "login=LeaAmmerman&lat=" + YOUR_LATITUDE + "&lng=" + YOUR_LONGITUDE + "&message=" + mess;		
+		// sends data to the server
 		myRequest.send(sendMessage);
 				
-	});
-
-	
+	});	
 
 }
 
+// prints the class data and the google map, while also calculating the distance of the 
+// user from their classmates
 function print(data, lat, long, mess) {	
 
 	// put lat long position in storage
@@ -101,12 +102,12 @@ function print(data, lat, long, mess) {
 		title: name,
 		icon: image
 	});
+
+	// put marker on the screen
 	marker.setMap(map);
 
 	// open info window when user clicks on window
 	AttachInfoWindow(map, marker, content);
-	
-	var out = "  ";
 	
 	// define toRad()
 	Number.prototype.toRad = function () {

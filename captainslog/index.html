@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+	<title>Captain's Log</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script>
+
+	// determines the date and sends it back to function call
+	function timestamp() {
+		var timestamp = new Date();
+		return timestamp.toUTCString();
+	}
+
+	$("#msg").bind("enterKey", function(event) {
+console.log("I am here");
+		var old = localStorage.getItem("messages");
+		if (old == null) {
+			old = " ";
+		}
+		var ConcatMessages = timestamp() + " - " + msg + '<br>' + old;
+		localStorage.setItem("messages", ConcatMessages);
+		document.getElementById("log").innerHTML = ConcatMessages;
+	});
+
+	</script>
+
+</head>
+
+<body>
+
+	<h1>Captain's Log</h1>
+	<h3>New entry: <input type="text" id="msg" name="msg" size="30" /></h3>
+	<div id="log"></div>
+
+</body>
+
+</html>
