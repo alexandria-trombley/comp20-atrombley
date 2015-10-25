@@ -9,22 +9,41 @@
 	<script>
 
 	// determines the date and sends it back to function call
-	function timestamp() {
-		var timestamp = new Date();
-		return timestamp.toUTCString();
-	}
+	$(document).ready(function(){
 
-	$("#msg").bind("enterKey", function(event) {
-console.log("I am here");
+		// get previous messages stored in local storage
 		var old = localStorage.getItem("messages");
+console.log(old);
+		// if there are no previous messages stored, start a string for concatonation
 		if (old == null) {
 			old = " ";
 		}
-		var ConcatMessages = timestamp() + " - " + msg + '<br>' + old;
-		localStorage.setItem("messages", ConcatMessages);
-		document.getElementById("log") = ConcatMessages;
-	});
 
+		// log old messages on the screen
+		$("#log").html("old");
+
+
+		function timestamp() {
+			var timestamp = new Date();
+			return timestamp.toUTCString();
+		}
+
+		$("#msg").change(function(event) {
+		
+
+			// get input from the web page
+			var input = $(this).val();
+
+			// concatonate the message to be posted on the page
+			var ConcatMessages = timestamp() + " - " + input + '<br>' + old;
+
+			// put this new string with new message in storage
+			localStorage.setItem("messages", ConcatMessages);
+
+			// put new message on the screen
+			$("#log").html(ConcatMessages);
+		});
+	});
 	</script>
 
 </head>
