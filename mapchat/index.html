@@ -33,9 +33,9 @@ function retrieveMessage() {
 
 		// parses the data when it has been returned from the server
 		myRequest.onreadystatechange = function() {
-	
+
 			if (myRequest.readyState == 4 && myRequest.status == 200) {
-		
+
 				var data = JSON.parse(myRequest.responseText);
 				print(data, latitude, longitude, mess);
 	
@@ -47,7 +47,7 @@ function retrieveMessage() {
 		}
 
 		// sends user information to post to server
-		myRequest.open("POST", "https://secret-about-box.herokuapp.com/sendLocation", true);
+		myRequest.open("POST", "https://serene-depths-5177.herokuapp.com", true);
 		myRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 
 		// make sure all information is in string format
@@ -56,6 +56,7 @@ function retrieveMessage() {
 		var sendMessage = "login=LeaAmmerman&lat=" + YOUR_LATITUDE + "&lng=" + YOUR_LONGITUDE + "&message=" + mess;		
 		// sends data to the server
 		myRequest.send(sendMessage);
+
 				
 	});	
 
