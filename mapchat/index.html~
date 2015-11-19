@@ -47,7 +47,7 @@ function retrieveMessage() {
 		}
 
 		// sends user information to post to server
-	//	myRequest.open("POST", "https://serene-depths-5177.herokuapp.com/sendLocation", true);
+	//	myRequest.open("POST", "http://serene-depths-5177.herokuapp.com/sendLocation", true);
 		myRequest.open("POST", "http://localhost:3000/sendLocation", true);
 		myRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 
