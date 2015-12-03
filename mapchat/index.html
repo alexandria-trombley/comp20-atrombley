@@ -37,6 +37,7 @@ function retrieveMessage() {
 			if (myRequest.readyState == 4 && myRequest.status == 200) {
 
 				var data = JSON.parse(myRequest.responseText);
+console.log(data);
 				print(data, latitude, longitude, mess);
 	
 			} else {
@@ -47,7 +48,8 @@ function retrieveMessage() {
 		}
 
 		// sends user information to post to server
-		myRequest.open("POST", "http://serene-depths-5177.herokuapp.com/sendLocation", true);
+		myRequest.open("POST", "http://localhost:3000/sendLocation", true);
+	//	myRequest.open("POST", "http://serene-depths-5177.herokuapp.com/sendLocation", true);
 		myRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 
 		// make sure all information is in string format
