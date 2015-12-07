@@ -19,8 +19,9 @@ function retrieveMessage() {
 
 	navigator.geolocation.getCurrentPosition(function(position) {
 
+	while(1) {
 		// sets user message
-		var mess = "Hello!";
+		var mess = 'hello';
 
 		// determines the location of the user, and puts that location into 
 		// storage by google map
@@ -37,7 +38,8 @@ function retrieveMessage() {
 			if (myRequest.readyState == 4 && myRequest.status == 200) {
 
 				var data = JSON.parse(myRequest.responseText);
-				print(data, latitude, longitude, mess);
+
+			//	print(data, latitude, longitude, mess);
 	
 			} else {
 				document.getElementById("canvas").innerHTML = "sorry, could not load data.";
@@ -47,18 +49,18 @@ function retrieveMessage() {
 		}
 
 		// sends user information to post to server
-		myRequest.open("POST", "http://localhost:3000/sendLocation", true);
+		myRequest.open("POST", "http://localhost:5000/sendLocation", true);
 	//	myRequest.open("POST", "http://serene-depths-5177.herokuapp.com/sendLocation", true);
 		myRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 
 		// make sure all information is in string format
 		var YOUR_LATITUDE = latitude.toString();
 		var YOUR_LONGITUDE = longitude.toString();
-		var sendMessage = "login=LeaAmmerman&lat=" + YOUR_LATITUDE + "&lng=" + YOUR_LONGITUDE + "&message=" + mess;		
+		var sendMessage = "login=mchow&lat=" + YOUR_LATITUDE + "&lng=" + YOUR_LONGITUDE + "&message=" + mess;		
 		// sends data to the server
 		myRequest.send(sendMessage);
 
-				
+	}		
 	});	
 
 }

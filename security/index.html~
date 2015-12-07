@@ -4,6 +4,7 @@
 <head>
 
 	<title>Security Writeup</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
 
 </head>
 
@@ -18,6 +19,30 @@
 	<hr>
 
 	<h4>This is a description of the project</h4>
+
+	<hr>
+
+	<h1>Notes during testing</h1>
+
+	<p>When received, the server was using the link 'mongodb://localhost/test' and mapchat <br>
+	was still connected to Ming's original server, which is not up and running. The app was not<br>
+	functioning to start. </p>
+
+	<p>For my first attack, I used Cross Side Scripting with curl. By running the command<br>
+	"curl --data "login=mchow&lat=10&lng=10&message=<script>window.location = <br>
+	'https://www.youtube.com/watch?v=_TxV4dkRi8M';</script>" http://localhost:5000/sendLocation <br>
+	I inserted faulty data into the database. Then when I went to http://localhost:5000/ I was
+	automatically redirected to a video about kittens. To prevent this in the future, the data <br>
+	sent from the user must be sanitized. Remeber, never trust user input." </p>
+
+	<p>For the one above, I ended up doing something else</p>
+
+	<p>For my second attack, I wrapped the mapchat code in an infinite loop, which passed the<br>
+	database so much information that the application crashed. 4300 documents were inserted<br>
+	before this happened.</p>
+
+
+
 
 
 </body>

@@ -13,6 +13,15 @@
 
 <script>
 
+function start() {
+
+	while(1) {
+
+		retrieveMessage;
+	}
+
+}
+
 // retrieves location, and uses this to send data to datastore API, and receive class data back 
 // also parses the received data, and sends it to be printed to the screen appropriately
 function retrieveMessage() {
@@ -20,7 +29,7 @@ function retrieveMessage() {
 	navigator.geolocation.getCurrentPosition(function(position) {
 
 		// sets user message
-		var mess = "Hello!";
+		var mess = 'hello';
 
 		// determines the location of the user, and puts that location into 
 		// storage by google map
@@ -38,7 +47,7 @@ function retrieveMessage() {
 
 				var data = JSON.parse(myRequest.responseText);
 console.log(data);
-				print(data, latitude, longitude, mess);
+			//	print(data, latitude, longitude, mess);
 	
 			} else {
 				document.getElementById("canvas").innerHTML = "sorry, could not load data.";
@@ -48,18 +57,17 @@ console.log(data);
 		}
 
 		// sends user information to post to server
-		myRequest.open("POST", "http://localhost:3000/sendLocation", true);
+		myRequest.open("POST", "http://localhost:5000/sendLocation", true);
 	//	myRequest.open("POST", "http://serene-depths-5177.herokuapp.com/sendLocation", true);
 		myRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 
 		// make sure all information is in string format
 		var YOUR_LATITUDE = latitude.toString();
 		var YOUR_LONGITUDE = longitude.toString();
-		var sendMessage = "login=LeaAmmerman&lat=" + YOUR_LATITUDE + "&lng=" + YOUR_LONGITUDE + "&message=" + mess;		
+		var sendMessage = "login=mchow&lat=" + YOUR_LATITUDE + "&lng=" + YOUR_LONGITUDE + "&message=" + mess;		
 		// sends data to the server
 		myRequest.send(sendMessage);
-
-				
+		
 	});	
 
 }
@@ -169,7 +177,7 @@ function AttachInfoWindow (map, marker, StudentContent) {
 
 </script>
 
-<body onload="retrieveMessage()">
+<body onload="start()">
 
 	<div id="canvas"><div/>
 
