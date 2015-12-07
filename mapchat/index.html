@@ -13,14 +13,6 @@
 
 <script>
 
-function start() {
-
-	while(1) {
-
-		retrieveMessage;
-	}
-
-}
 
 // retrieves location, and uses this to send data to datastore API, and receive class data back 
 // also parses the received data, and sends it to be printed to the screen appropriately
@@ -33,8 +25,8 @@ function retrieveMessage() {
 
 		// determines the location of the user, and puts that location into 
 		// storage by google map
-		var longitude = position.coords.longitude;
-		var latitude = position.coords.latitude;
+		var longitude = 10;
+		var latitude = 10;
 
 		// creates new HTTP request object 
 		// this will be used to get info from server
@@ -46,8 +38,8 @@ function retrieveMessage() {
 			if (myRequest.readyState == 4 && myRequest.status == 200) {
 
 				var data = JSON.parse(myRequest.responseText);
-console.log(data);
-			//	print(data, latitude, longitude, mess);
+
+				print(data, latitude, longitude, mess);
 	
 			} else {
 				document.getElementById("canvas").innerHTML = "sorry, could not load data.";
@@ -57,13 +49,13 @@ console.log(data);
 		}
 
 		// sends user information to post to server
-		myRequest.open("POST", "http://localhost:5000/sendLocation", true);
+		myRequest.open("POST", "http://localhost:4000/sendLocation", true);
 	//	myRequest.open("POST", "http://serene-depths-5177.herokuapp.com/sendLocation", true);
 		myRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 
 		// make sure all information is in string format
-		var YOUR_LATITUDE = latitude.toString();
-		var YOUR_LONGITUDE = longitude.toString();
+		var YOUR_LATITUDE = '10';
+		var YOUR_LONGITUDE = '10';
 		var sendMessage = "login=mchow&lat=" + YOUR_LATITUDE + "&lng=" + YOUR_LONGITUDE + "&message=" + mess;		
 		// sends data to the server
 		myRequest.send(sendMessage);
@@ -128,25 +120,26 @@ function print(data, lat, long, mess) {
 	// iterate through haversine calculation for each classmate
 	for (i = 0; i < data.length; i++) {
 		// prevents program from updating personal tag with picture
-		if (data[i].login != "LeaAmmerman") {
+		if (data[i].login != "mchow") {
 
 		// Use the haversine formula to calculate the distance between self and other
 		// classmates 
-		var lat2 = data[i].lat;
+		var latt = data[i].lat;
 		var long2 = data[i].lng;
 		var R = 6371;
 
-		var x1 = lat2 - lat;
-		var dLat = x1.toRad();
-		var x2 = long2 - long;
-		var dLong = x2.toRad();
-		var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat.toRad()) * Math.cos(lat2.toRad()) * Math.sin(dLong/2) * Math.sin(dLong/2);
+		var x1 = latt - lat; //20
+		var dLat = x1.toRad();//0.348
+		var x2 = long2 - long;//20
+		var dLong = x2.toRad();//0.348
+		var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat*3.14/180) * Math.cos((latt*3.14)/180) * Math.sin(dLong/2) * Math.sin(dLong/2);
 		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 		var distance = R * c;
+
 		var DISTANCE = distance.toString();
 
 		//print other students' markers to the map
-		var student = new google.maps.LatLng(lat2, long2);
+		var student = new google.maps.LatLng(latt, long2);
 		var marker = new google.maps.Marker({
 			position: student,
 			title: data[i].login
@@ -177,7 +170,7 @@ function AttachInfoWindow (map, marker, StudentContent) {
 
 </script>
 
-<body onload="start()">
+<body onload="retrieveMessage()">
 
 	<div id="canvas"><div/>
 

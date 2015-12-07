@@ -14,40 +14,101 @@
 	
 	<h4>Prepared by Alexandria Trombley</h4> <br>
 
+	<hr>
+
 	<h2>Introduction</h2>
 
-	<hr>
-
-	<h4>This is a description of the project</h4>
+	<p>I was hired to assess the security and privacy vulnerabilities of Ronna ten Brink’s web application Mapchat and the server that she built to store the data from this web application. The Mapchat application sends the client’s username, a hard-coded message, and their latitude and longitude to the server. This information constitutes a check-in. In response, the server returns all of the stored check-ins from other users. The server also has the ability to return the latest check-in from a specified user, and return an HTML page with all of the check-ins stored in the server. </p>
 
 	<hr>
 
-	<h1>Notes during testing</h1>
+	<h2>Methodology</h2>
 
-	<p>When received, the server was using the link 'mongodb://localhost/test' and mapchat <br>
-	was still connected to Ming's original server, which is not up and running. The app was not<br>
-	functioning to start. </p>
+	<p>I first tried to test the Mapchat application with black-box methodology. However, after little success, I looked at the source code to find that my client’s client-side Mapchat was running on an inappropriate server (https://secret-about-box.herokuapp.com). After this realization, I decided to test the application locally. Using curl and the APIs built into the server, I was able to find many vulnerabilities. </p>
 
-	<p>For my first attack, I used Cross Side Scripting with curl. By running the command<br>
-	"curl --data "login=mchow&lat=10&lng=10&message=<script>window.location = <br>
-	'https://www.youtube.com/watch?v=_TxV4dkRi8M';</script>" http://localhost:5000/sendLocation <br>
-	I inserted faulty data into the database. Then when I went to http://localhost:5000/ I was
-	automatically redirected to a video about kittens. To prevent this in the future, the data <br>
-	sent from the user must be sanitized. Remeber, never trust user input." </p>
+	<hr>
 
-	<p>For the one above, I ended up doing something else</p>
+	<h2>Abstract of Findings</h2>
 
-	<p>For my second attack, I wrapped the mapchat code in an infinite loop, which passed the<br>
-	database so much information that the application crashed. 4300 documents were inserted<br>
-	before this happened.</p>
+	<p>A variety of different security and vulnerability issues were found with this application. These vulnerabilities all have to do with trusting people using the application, and trusting people using the server. As it stands, people can pass any information through the mapchat interface using the correct tools, and anyone can use the information stored in the server. In the future, preventative measures must be taken to ensure only trusted users are accessing and using the application and server. </p>
 
-	<p> for my third attack, I showed how important it is to have restrictions on who can use your<br>
-	database. Though I just inserted a console.log, someone could write an application that deleted<br>
-	certain documents, or the entire database. </p>
+	<hr>
+
+	<h2>Issues Found</h2>
+
+	<ol>
+
+		<li><b>Cross-Site Scripting</b>
 	
+		<ul>
 
+			<li><b>Location:</b> Harmful code is submitted through POST /sendLocation API. The client is affected when they open the home page that lists all of the check-ins. </li>
 
+			<li><b>Severity of Issue:</b> High severity. The ability to insert any script into the page could result in a malicious user redirecting others to seemingly-trustable pages which collect sensitive information. </li>
 
+			<li><b>Description of Issue:</b> When posting data with the /sendLocation API and cURL, I inserted script in place of a message, as shown below. My script resulted in the automatic redirection of any user to a YouTube video about cats, also shown below. A truly malicious user could perform more severe attacks. </li>
 
+			<li><b>Proof of Vulnerability:</b> <br> 
 
+			<img src="curl command CSS youtube.png" alt="curl command to go to youtube" height="130"/> <br>
+			<img src="result CSS youtube.png" alt="result of CSS" height="500"/>
+
+			</li>
+
+			<li><b>Resolution:</b> To resolve this problem, the user input must be sanitized before being inserted into the database. For a cost-effective solution, I would recommend making sure the data does not have any symbols such as &apos &lt &apos and ‘&gt’ by escaping the user input.</li>
+
+		</ul>
+		</li>
+
+		<li><b>Filling Database to Maximum Capacity</b>
+	
+		<ul>
+
+			<li><b>Location:</b>This issue is with the database used to store check-ins.  </li>
+
+			<li><b>Severity of Issue:</b>Moderate severity. Though this kind of attack would undermine the functionality of the web application, it is less likely to occur because it does not provide anything useful to the malicious user.  </li>
+
+			<li><b>Description of Issue:</b>In the Mapchat code, the function ‘retrieveMessage’ is from where data is sent to the database. I made and called a function which called ‘retrieveMessage’ in an infinite loop, as shown below. This resulted in 4343 documents being inserted into the database, the database filling up, and the web application crashing, as shown in the second image below.  </li>
+
+			<li><b>Proof of Vulnerability:</b> <br> 
+
+			<img src="infinite loop.png" alt="infinite loop" height="200"/> <br>
+			<img src="web response fill database.png" alt="web application crash" height="500"/>
+
+			</li>
+
+			<li><b>Resolution:</b>There are a few ways to fix this problem. You could restrict the number of times one person checks in over a certain period of time, or use a database with a larger storage size when more users start to access the application. Microsoft Azure allows data storage at a reasonable price. You should also restrict who has access to your server. If I did not have access to the server, I would not have been able to insert so many documents. This requires updating the access control settings in the response header. </li>
+
+		</ul>
+		</li>
+
+		<li><b>Query Injection</b>
+	
+		<ul>
+
+			<li><b>Location:</b>a. The /latest.json API in the server.</li>
+
+			<li><b>Severity of Issue:</b>Low severity. Query injection allows the malicious user to access information that they should not be able to access. For example, query injection might allow the malicious user to access the most recent location of other users of the Mapchat application. However, this information is provided to the user with Mapchat anyways—it is one of the main goals of the application, so users accessing it is not of high concern. </li>
+
+			<li><b>Description of Issue:</b>As shown below, I inserted [$ne] into the query. This returned the most recent login of a user that is not ‘LeaAmmerman’ (me).This allowed me to see the most recent login of mchow, as well as his location. </li>
+
+			<li><b>Proof of Vulnerability:</b> <br> 
+
+			<img src="query insertion.png" alt="query injection" height="200"/> <br>
+
+			</li>
+
+			<li><b>Resolution:</b>I recommend checking the query from the user before searching for it in the database. When there is a query injection, it is read from the web browser in the format (this exact example from the test I ran): { ‘$ne’: ‘LeaAmmerman’ }. A simple check to see if the login has symbols such as ‘{‘, ‘:’ or ‘’’, and a resulting error message if that is the case, would rectify this problem.</li>
+
+		</ul>
+		</li>
+
+	</ol>
+
+	<hr>
+
+	<h2>Conclusion</h2>
+
+	<p>Though the security issues listed above put the application at great risk, they are simple to fix. Just a couple of hours of focus from an experienced web developer would completely eliminate these issues. You should have to budget no more than $1000 for these adjustments. After these flaws have been resolved, I recommend regular monitoring of the database to be sure no other attacks are taking place. </p>
+			
 </body>
