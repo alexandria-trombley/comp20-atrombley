@@ -18,13 +18,13 @@
 
 	<h2>Introduction</h2>
 
-	<p>I was hired to assess the security and privacy vulnerabilities of Ronna ten Brink’s web application Mapchat and the server that she built to store the data from this web application. The Mapchat application sends the client’s username, a hard-coded message, and their latitude and longitude to the server. This information constitutes a check-in. In response, the server returns all of the stored check-ins from other users. The server also has the ability to return the latest check-in from a specified user, and return an HTML page with all of the check-ins stored in the server. </p>
+	<p>I was hired to assess the security and privacy vulnerabilities of Ronna ten Brink&#39s web application Mapchat and the server that she built to store the data from this web application. The Mapchat application sends the client&#39s username, a hard-coded message, and their latitude and longitude to the server. This information constitutes a check-in. In response, the server returns all of the stored check-ins from other users. The server also has the ability to return the latest check-in from a specified user, and return an HTML page with all of the check-ins stored in the server. </p>
 
 	<hr>
 
 	<h2>Methodology</h2>
 
-	<p>I first tried to test the Mapchat application with black-box methodology. However, after little success, I looked at the source code to find that my client’s client-side Mapchat was running on an inappropriate server (https://secret-about-box.herokuapp.com). After this realization, I decided to test the application locally. Using curl and the APIs built into the server, I was able to find many vulnerabilities. </p>
+	<p>I first tried to test the Mapchat application with black-box methodology. However, after little success, I looked at the source code to find that my client&#39s client-side Mapchat was running on an inappropriate server (https://secret-about-box.herokuapp.com). After this realization, I decided to test the application locally. Using cURL and the APIs built into the server, I was able to find many vulnerabilities. </p>
 
 	<hr>
 
@@ -38,70 +38,70 @@
 
 	<ol>
 
-		<li><b>Cross-Site Scripting</b>
+		<li><b>Cross-Site Scripting</b><br><br>
 	
 		<ul>
 
-			<li><b>Location:</b> Harmful code is submitted through POST /sendLocation API. The client is affected when they open the home page that lists all of the check-ins. </li>
+			<li><b>Location:</b> Harmful code is submitted through POST /sendLocation API. The client is affected when they open the home page that lists all of the check-ins. </li><br>
 
-			<li><b>Severity of Issue:</b> High severity. The ability to insert any script into the page could result in a malicious user redirecting others to seemingly-trustable pages which collect sensitive information. </li>
+			<li><b>Severity of Issue:</b> High severity. The ability to insert any script into the page could result in a malicious user redirecting others to seemingly-trustable pages which collect sensitive information. </li><br>
 
-			<li><b>Description of Issue:</b> When posting data with the /sendLocation API and cURL, I inserted script in place of a message, as shown below. My script resulted in the automatic redirection of any user to a YouTube video about cats, also shown below. A truly malicious user could perform more severe attacks. </li>
+			<li><b>Description of Issue:</b> When posting data with the /sendLocation API and cURL, I inserted script in place of a message, as shown below. My script resulted in the automatic redirection of any user to a YouTube video about cats, also shown below. A truly malicious user could perform more severe attacks. </li><br>
 
 			<li><b>Proof of Vulnerability:</b> <br> 
 
-			<img src="curl command CSS youtube.png" alt="curl command to go to youtube" height="130"/> <br>
-			<img src="result CSS youtube.png" alt="result of CSS" height="500"/>
+			<img src="curl command CSS youtube.png" alt="curl command to go to youtube"/> <br>
+			<img src="result CSS youtube.png" alt="result of CSS"/><br>
 
-			</li>
+			</li><br>
 
-			<li><b>Resolution:</b> To resolve this problem, the user input must be sanitized before being inserted into the database. For a cost-effective solution, I would recommend making sure the data does not have any symbols such as &apos&lt&apos and ‘&gt’ by escaping the user input.</li>
+			<li><b>Resolution:</b> To resolve this problem, the user input must be sanitized before being inserted into the database. For a cost-effective solution, I would recommend making sure the data does not have any symbols such as &#39 &lt &#39 and &#39 &gt &#39 by HTML encoding these symbols. This only requires, for example, replacing &#39 &lt &#39 with &#39 &#x26;#39 &#39. </li>
 
 		</ul>
-		</li>
+		</li><br><br>
 
-		<li><b>Filling Database to Maximum Capacity</b>
+		<li><b>Filling Database to Maximum Capacity</b><br><br>
 	
 		<ul>
 
-			<li><b>Location:</b>This issue is with the database used to store check-ins.  </li>
+			<li><b>Location:</b> This issue is with the database used to store check-ins.  </li><br>
 
-			<li><b>Severity of Issue:</b>Moderate severity. Though this kind of attack would undermine the functionality of the web application, it is less likely to occur because it does not provide anything useful to the malicious user.  </li>
+			<li><b>Severity of Issue:</b> Moderate severity. Though this kind of attack would undermine the functionality of the web application, it is less likely to occur because it does not provide anything useful to the malicious user.  </li><br>
 
-			<li><b>Description of Issue:</b>In the Mapchat code, the function ‘retrieveMessage’ is from where data is sent to the database. I made and called a function which called ‘retrieveMessage’ in an infinite loop, as shown below. This resulted in 4343 documents being inserted into the database, the database filling up, and the web application crashing, as shown in the second image below.  </li>
+			<li><b>Description of Issue:</b> In the Mapchat code, the function &#39retrieveMessage&#39 is from where data is sent to the database. I made and called a function which called &#39retrieveMessage&#39 in an infinite loop, as shown below. This resulted in 4343 documents being inserted into the database, the database filling up, and the web application crashing, as shown in the second image below.  </li><br>
 
 			<li><b>Proof of Vulnerability:</b> <br> 
 
-			<img src="infinite loop.png" alt="infinite loop" height="200"/> <br>
-			<img src="web response fill database.png" alt="web application crash" height="500"/>
+			<img src="infinite loop.png" alt="infinite loop"/> <br>
+			<img src="web response fill database.png" alt="web application crash"/><br>
 
-			</li>
+			</li><br>
 
-			<li><b>Resolution:</b>There are a few ways to fix this problem. You could restrict the number of times one person checks in over a certain period of time, or use a database with a larger storage size when more users start to access the application. Microsoft Azure allows data storage at a reasonable price. You should also restrict who has access to your server. If I did not have access to the server, I would not have been able to insert so many documents. This requires updating the access control settings in the response header. </li>
+			<li><b>Resolution:</b> There are a few ways to fix this problem. You could restrict the number of times one person checks in over a certain period of time, or use a database with a larger storage size when more users start to access the application. Microsoft Azure allows data storage at a reasonable price. You should also restrict who has access to your server. If I did not have access to the server, I would not have been able to insert so many documents. This requires updating the access control settings in the response header. </li>
 
 		</ul>
-		</li>
+		</li><br><br>
 
-		<li><b>Query Injection</b>
+		<li><b>Query Injection</b><br><br>
 	
 		<ul>
 
-			<li><b>Location:</b>a. The /latest.json API in the server.</li>
+			<li><b>Location:</b>The /latest.json API in the server.</li><br>
 
-			<li><b>Severity of Issue:</b>Low severity. Query injection allows the malicious user to access information that they should not be able to access. For example, query injection might allow the malicious user to access the most recent location of other users of the Mapchat application. However, this information is provided to the user with Mapchat anyways—it is one of the main goals of the application, so users accessing it is not of high concern. </li>
+			<li><b>Severity of Issue:</b>Low severity. Query injection allows the malicious user to access information that they should not be able to access. For example, query injection might allow the malicious user to access the most recent location of other users of the Mapchat application. However, this information is provided to the user with Mapchat anyways &#45&#45 it is one of the main goals of the application, so users accessing it is not of high concern. </li><br>
 
-			<li><b>Description of Issue:</b>As shown below, I inserted [$ne] into the query. This returned the most recent login of a user that is not ‘LeaAmmerman’ (me).This allowed me to see the most recent login of mchow, as well as his location. </li>
+			<li><b>Description of Issue:</b>As shown below, I inserted [$ne] into the query. This returned the most recent login of a user that is not &#39LeaAmmerman&#39 (me).This allowed me to see the most recent login of mchow, as well as his location. </li><br>
 
 			<li><b>Proof of Vulnerability:</b> <br> 
 
-			<img src="query insertion.png" alt="query injection" height="200"/> <br>
+			<img src="query insertion.png" alt="query injection"/> <br>
 
-			</li>
+			</li><br>
 
-			<li><b>Resolution:</b>I recommend checking the query from the user before searching for it in the database. When there is a query injection, it is read from the web browser in the format (this exact example from the test I ran): { ‘$ne’: ‘LeaAmmerman’ }. A simple check to see if the login has symbols such as ‘{‘, ‘:’ or ‘’’, and a resulting error message if that is the case, would rectify this problem.</li>
+			<li><b>Resolution:</b>I recommend checking the query from the user before searching for it in the database. When there is a query injection, it is read from the web browser in the format (this exact example from the test I ran): { &#39 $ne &#39: &#39 LeaAmmerman &#39 }. A simple check to see if the login has symbols such as &#39{&#39, &#39:&#39 or &#39&#39&#39, and a resulting error message if that is the case, would rectify this problem.</li>
 
 		</ul>
-		</li>
+		</li><br>
 
 	</ol>
 
